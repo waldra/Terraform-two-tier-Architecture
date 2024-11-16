@@ -1,4 +1,4 @@
-# Create internet gateway
+# Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
 
@@ -7,7 +7,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# Create Elastic IPs for the NAT gateway
+# Elastic IPs for the NAT gatewaies, one eip per NAT gateway
 resource "aws_eip" "nat_gw_eip" {
   count  = length(var.private_subnets)
   domain = "vpc"
@@ -17,7 +17,7 @@ resource "aws_eip" "nat_gw_eip" {
   }
 }
 
-# Create NAT gateway, each in a different public subnet
+# NAT gatewaies, each in a different public subnet
 resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.nat_gw_eip[count.index].id
   subnet_id     = aws_subnet.public_subnets[count.index].id
