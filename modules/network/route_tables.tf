@@ -1,4 +1,4 @@
-# Create public route table for the public subnets
+# Route Table for the public subnets
 resource "aws_route_table" "public_rtb" {
   vpc_id = aws_vpc.vpc.id
 
@@ -12,14 +12,14 @@ resource "aws_route_table" "public_rtb" {
   }
 }
 
-# Associate public subnets with the public route table
+# Associate public subnets with the route table
 resource "aws_route_table_association" "public_association" {
   count          = length(var.public_subnets)
   subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.public_rtb.id
 }
 
-# Create route tables for the private subnets, one route table for each private subnet
+# Route Tables for the private subnets, one route table for each private subnet
 resource "aws_route_table" "private_rtb" {
   count  = length(var.private_subnets)
   vpc_id = aws_vpc.vpc.id
